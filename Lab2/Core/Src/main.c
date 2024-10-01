@@ -49,6 +49,26 @@ void display7SEG(int num) {
 		HAL_GPIO_WritePin(GPIOB, F_Pin, GPIO_PIN_SET); // Segment F
 		HAL_GPIO_WritePin(GPIOB, G_Pin, GPIO_PIN_RESET); // Segment G
 	}
+	if(num == 3){
+
+		HAL_GPIO_WritePin(GPIOB, A_Pin, GPIO_PIN_RESET); // Segment A
+		HAL_GPIO_WritePin(GPIOB, B_Pin, GPIO_PIN_RESET); // Segment B
+		HAL_GPIO_WritePin(GPIOB, C_Pin, GPIO_PIN_RESET); // Segment C
+		HAL_GPIO_WritePin(GPIOB, D_Pin, GPIO_PIN_RESET); // Segment D
+		HAL_GPIO_WritePin(GPIOB, E_Pin, GPIO_PIN_SET); // Segment E
+		HAL_GPIO_WritePin(GPIOB, F_Pin, GPIO_PIN_SET); // Segment F
+		HAL_GPIO_WritePin(GPIOB, G_Pin, GPIO_PIN_RESET); // Segment G
+	}
+	if(num == 0){
+
+		HAL_GPIO_WritePin(GPIOB, A_Pin, GPIO_PIN_RESET); // Segment A
+		HAL_GPIO_WritePin(GPIOB, B_Pin, GPIO_PIN_RESET); // Segment B
+		HAL_GPIO_WritePin(GPIOB, C_Pin, GPIO_PIN_RESET); // Segment C
+		HAL_GPIO_WritePin(GPIOB, D_Pin, GPIO_PIN_RESET); // Segment D
+		HAL_GPIO_WritePin(GPIOB, E_Pin, GPIO_PIN_RESET); // Segment E
+		HAL_GPIO_WritePin(GPIOB, F_Pin, GPIO_PIN_RESET); // Segment F
+		HAL_GPIO_WritePin(GPIOB, G_Pin, GPIO_PIN_SET); // Segment G
+	}
 }
 /* USER CODE END PFP */
 
@@ -188,14 +208,17 @@ static void MX_GPIO_Init(void)
   __HAL_RCC_GPIOB_CLK_ENABLE();
 
   /*Configure GPIO pin Output Level */
-  HAL_GPIO_WritePin(GPIOA, RED_LED_Pin|EN0_Pin|EN1_Pin, GPIO_PIN_RESET);
+  HAL_GPIO_WritePin(GPIOA, DOT_Pin|RED_LED_Pin|EN0_Pin|EN1_Pin
+                          |EN2_Pin|EN3_Pin, GPIO_PIN_RESET);
 
   /*Configure GPIO pin Output Level */
   HAL_GPIO_WritePin(GPIOB, A_Pin|B_Pin|C_Pin|D_Pin
                           |E_Pin|F_Pin|G_Pin, GPIO_PIN_RESET);
 
-  /*Configure GPIO pins : RED_LED_Pin EN0_Pin EN1_Pin */
-  GPIO_InitStruct.Pin = RED_LED_Pin|EN0_Pin|EN1_Pin;
+  /*Configure GPIO pins : DOT_Pin RED_LED_Pin EN0_Pin EN1_Pin
+                           EN2_Pin EN3_Pin */
+  GPIO_InitStruct.Pin = DOT_Pin|RED_LED_Pin|EN0_Pin|EN1_Pin
+                          |EN2_Pin|EN3_Pin;
   GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;
   GPIO_InitStruct.Pull = GPIO_NOPULL;
   GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
@@ -213,30 +236,40 @@ static void MX_GPIO_Init(void)
 }
 
 /* USER CODE BEGIN 4 */
-int counter = 100;
+int counter = 200;
 void HAL_TIM_PeriodElapsedCallback ( TIM_HandleTypeDef * htim ){
-	if(counter == 100){
+	if(counter == 200){
+		HAL_GPIO_WritePin(DOT_GPIO_Port, DOT_Pin, GPIO_PIN_RESET);
 		display7SEG(1);
 		HAL_GPIO_WritePin(EN0_GPIO_Port, EN0_Pin, GPIO_PIN_RESET);
 		HAL_GPIO_WritePin(EN1_GPIO_Port, EN1_Pin, GPIO_PIN_SET);
+		HAL_GPIO_WritePin(EN1_GPIO_Port, EN2_Pin, GPIO_PIN_SET);
+		HAL_GPIO_WritePin(EN1_GPIO_Port, EN3_Pin, GPIO_PIN_SET);
 	}
-	else if(counter == 50){
+	else if(counter == 150){
 		display7SEG(2);
 		HAL_GPIO_WritePin(EN1_GPIO_Port, EN1_Pin, GPIO_PIN_RESET);
 		HAL_GPIO_WritePin(EN0_GPIO_Port, EN0_Pin, GPIO_PIN_SET);
+		HAL_GPIO_WritePin(EN1_GPIO_Port, EN2_Pin, GPIO_PIN_SET);
+		HAL_GPIO_WritePin(EN1_GPIO_Port, EN3_Pin, GPIO_PIN_SET);
+	}
+	else if(counter == 100){
+		HAL_GPIO_WritePin(DOT_GPIO_Port, DOT_Pin, GPIO_PIN_SET);
+		display7SEG(3);
+		HAL_GPIO_WritePin(EN1_GPIO_Port, EN2_Pin, GPIO_PIN_RESET);
+		HAL_GPIO_WritePin(EN0_GPIO_Port, EN0_Pin, GPIO_PIN_SET);
+		HAL_GPIO_WritePin(EN1_GPIO_Port, EN1_Pin, GPIO_PIN_SET);
+		HAL_GPIO_WritePin(EN1_GPIO_Port, EN3_Pin, GPIO_PIN_SET);
+	}
+	else if(counter == 50){
+		display7SEG(0);
+		HAL_GPIO_WritePin(EN1_GPIO_Port, EN3_Pin, GPIO_PIN_RESET);
+		HAL_GPIO_WritePin(EN0_GPIO_Port, EN0_Pin, GPIO_PIN_SET);
+		HAL_GPIO_WritePin(EN1_GPIO_Port, EN1_Pin, GPIO_PIN_SET);
+		HAL_GPIO_WritePin(EN1_GPIO_Port, EN2_Pin, GPIO_PIN_SET);
 	}
 	counter--;
-	if(counter == 0) counter = 100;
-//	if (current_display == 0) {
-//		display7SEG(led_buffer[0]);  // Display '1'
-//		HAL_GPIO_WritePin(GPIOA, GPIO_PIN_0, GPIO_PIN_RESET);  // Enable first display
-//		current_display = 1;  // Switch to the second display next time
-//	}
-//	if(current_display == 1){	        // Show number "2" on the second display
-//		display7SEG(led_buffer[1]);  // Display '2'
-//		HAL_GPIO_WritePin(GPIOA, GPIO_PIN_1, GPIO_PIN_RESET);  // Enable second display
-//		current_display = 0;  // Switch back to the first display next time
-//	}
+	if(counter == 0) counter = 200;
 }
 
 /* USER CODE END 4 */
