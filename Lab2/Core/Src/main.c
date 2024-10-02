@@ -169,11 +169,9 @@ int main(void)
   /* USER CODE BEGIN WHILE */
   int hour = 15 , minute = 8 , second = 50;
   while (1) {
-	  while (1) {
-		  if(timer0_flag == 1){
-			  HAL_GPIO_TogglePin ( LED_RED_GPIO_Port , LED_RED_Pin ) ;
-			  setTimer0 (2000);
-		  }
+	  if(timer0_flag == 1){
+		  HAL_GPIO_TogglePin ( RED_LED_GPIO_Port , RED_LED_Pin ) ;
+		  setTimer0 (1000);
 		  second ++;
 		  if ( second >= 60) {
 			  second = 0;
@@ -187,9 +185,8 @@ int main(void)
 			  hour = 0;
 		  }
 		  updateClockBuffer () ;
-		  HAL_Delay (1000) ;
-	  }
   }
+}
     /* USER CODE END WHILE */
 
     /* USER CODE BEGIN 3 */
