@@ -227,16 +227,6 @@ void HAL_TIM_PeriodElapsedCallback ( TIM_HandleTypeDef * htim ){
 	}
 	counter--;
 	if(counter == 0) counter = 100;
-//	if (current_display == 0) {
-//		display7SEG(led_buffer[0]);  // Display '1'
-//		HAL_GPIO_WritePin(GPIOA, GPIO_PIN_0, GPIO_PIN_RESET);  // Enable first display
-//		current_display = 1;  // Switch to the second display next time
-//	}
-//	if(current_display == 1){	        // Show number "2" on the second display
-//		display7SEG(led_buffer[1]);  // Display '2'
-//		HAL_GPIO_WritePin(GPIOA, GPIO_PIN_1, GPIO_PIN_RESET);  // Enable second display
-//		current_display = 0;  // Switch back to the first display next time
-//	}
 }
 
 /* USER CODE END 4 */
